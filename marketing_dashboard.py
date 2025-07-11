@@ -4,7 +4,6 @@ import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
-import plotly.figure_factory as ff
 from datetime import datetime, timedelta
 import time
 
@@ -483,20 +482,25 @@ with tab4:
         st.plotly_chart(fig_heatmap, use_container_width=True)
     
     with col2:
-        # CTR Distribution with KDE
-        fig_dist = ff.create_distplot(
-            [filtered_df['ctr'].values],
-            ['CTR'],
-            bin_size=0.005,
-            colors=['#667eea']
+        # CTR Distribution with Histogram
+        fig_dist = px.histogram(
+            filtered_df,
+            x='ctr',
+            nbins=30,
+            title='📊 Click-Through Rate Distribution',
+            color_discrete_sequence=['#667eea'],
+            marginal='box'  # Adds box plot on top
         )
         fig_dist.update_layout(
             title='📊 Click-Through Rate Distribution',
             plot_bgcolor='rgba(0,0,0,0)',
             paper_bgcolor='rgba(0,0,0,0)',
             font=dict(color='white'),
-            showlegend=False
+            showlegend=False,
+            xaxis_title='Click-Through Rate',
+            yaxis_title='Frequency'
         )
+        fig_dist.update_traces(opacity=0.7)
         st.plotly_chart(fig_dist, use_container_width=True)
     
     # Performance Comparison Table
